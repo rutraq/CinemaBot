@@ -14,6 +14,7 @@ namespace ConsoleApp1
     {
         private static ITelegramBotClient botClient;
         private static List<string> commands = new List<string>() { "Вывод популярных фильмов", "Поиск фильма" };
+
         private static string startText = "Привет я дурачёк";
         public List<string> Films { get => Films; set => Films = value; }
         public void Bot()

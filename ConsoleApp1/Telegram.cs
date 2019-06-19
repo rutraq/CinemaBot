@@ -15,6 +15,7 @@ namespace ConsoleApp1
         private static ITelegramBotClient botClient;
         private static List<string> commands = new List<string>() { "Вывод популярных фильмов", "Поиск фильма" };
         private static string startText = "Привет я дурачёк";
+        public List<string> Films { get => Films; set => Films = value; }
         public void Bot()
         {
             botClient = new TelegramBotClient("727728678:AAF4w9wmiNvU0f0VAH_UMBCYJjVIY8jwqkE") { Timeout = TimeSpan.FromSeconds(10) };
@@ -24,9 +25,9 @@ namespace ConsoleApp1
         private async void OnMessageAsync(object sender, MessageEventArgs e)
         {
             var text = e?.Message?.Text;
-            for (int i = 0; i < films.Count; i++)
+            for (int i = 0; i < Films.Count; i++)
             {
-                startText += films[i] + "\n";
+                startText += Films[i] + "\n";
             }
             if (text == null)
             {
@@ -62,7 +63,7 @@ namespace ConsoleApp1
             //Поиск фильма
             else if (text == commands[1])
             {
-                SearchFilm film = new SearchFilm("Докторс стрендж");
+                SearchFilms films = new SearchFilms("Доктор стрендж");
             }
         }
     }

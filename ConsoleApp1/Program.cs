@@ -10,8 +10,6 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            kinopoisk kinopoisk = new kinopoisk();
-            kinopoisk.Top();
             Telegram telegram = new Telegram();
             telegram.Bot();
             for(; ; ) { }

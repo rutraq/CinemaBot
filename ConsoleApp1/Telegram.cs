@@ -14,9 +14,9 @@ namespace ConsoleApp1
     {
         private static ITelegramBotClient botClient;
         private static List<string> commands = new List<string>() { "Вывод популярных фильмов", "Поиск фильма" };
+        public static List<long> searchFromUser = new List<long>();
 
         private static string startText = "Привет я дурачёк";
-        public List<string> Films { get => Films; set => Films = value; }
         public void Bot()
         {
             botClient = new TelegramBotClient("727728678:AAF4w9wmiNvU0f0VAH_UMBCYJjVIY8jwqkE") { Timeout = TimeSpan.FromSeconds(10) };
@@ -26,9 +26,23 @@ namespace ConsoleApp1
         private async void OnMessageAsync(object sender, MessageEventArgs e)
         {
             var text = e?.Message?.Text;
-            for (int i = 0; i < Films.Count; i++)
+            if (searchFromUser.Contains(e.Message.Chat.Id))
             {
-                startText += Films[i] + "\n";
+                await botClient.SendTextMessageAsync(
+                    chatId: e.Message.Chat.Id,
+                    text: "Пожалуйста подождите. Это может занять до 15 секунд"
+                    );
+                SearchFilms films = new SearchFilms(e.Message.Text);
+                List<string> mess = films.Search();
+                await botClient.SendPhotoAsync(
+                    chatId: e.Message.Chat,
+                    photo: mess[1]
+                    );
+                await botClient.SendTextMessageAsync(
+                    chatId: e.Message.Chat,
+                    text: mess[0]
+                    );
+                searchFromUser.Remove(e.Message.Chat.Id);
             }
             if (text == null)
             {
@@ -64,7 +78,15 @@ namespace ConsoleApp1
             //Поиск фильма
             else if (text == commands[1])
             {
-                SearchFilms films = new SearchFilms("Доктор стрендж");
+                await botClient.DeleteMessageAsync(
+                    chatId: e.Message.Chat,
+                    messageId: e.Message.MessageId
+                    );
+                await botClient.SendTextMessageAsync(
+                    chatId: e.Message.Chat,
+                    text: "Введите названия фильма"
+                    );
+                searchFromUser.Add(e.Message.Chat.Id);
             }
         }
     }

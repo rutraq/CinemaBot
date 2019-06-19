@@ -13,7 +13,11 @@ namespace ConsoleApp1
     {
         private static ITelegramBotClient botClient;
         private static List<string> commands = new List<string>() { "/comands" };
-        private static string startText = "Привет я дурачёк";
+        public static List<string> films = new List<string>();
+        private static string startText = "";
+
+        public List<string> Films { get => films; set => films = value; }
+
         public void Bot()
         {
             botClient = new TelegramBotClient("727728678:AAF4w9wmiNvU0f0VAH_UMBCYJjVIY8jwqkE") { Timeout = TimeSpan.FromSeconds(10) };
@@ -21,14 +25,13 @@ namespace ConsoleApp1
             botClient.StartReceiving();
         }
 
-        public void fjlksdfjsl
-        {
-
-        }
-
         private async void OnMessageAsync(object sender, MessageEventArgs e)
         {
             var text = e?.Message?.Text;
+            for (int i = 0; i < films.Count; i++)
+            {
+                startText += films[i] + "\n";
+            }
             if (text == null)
             {
                 return;

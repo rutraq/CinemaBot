@@ -21,6 +21,11 @@ namespace ConsoleApp1
             botClient.StartReceiving();
         }
 
+        public void fjlksdfjsl
+        {
+
+        }
+
         private async void OnMessageAsync(object sender, MessageEventArgs e)
         {
             var text = e?.Message?.Text;
